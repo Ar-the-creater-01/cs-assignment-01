@@ -1,0 +1,77 @@
+#include <stdio.h>
+
+#define ACCOUNTS 3
+
+void displayMenu() {
+    printf("\n--- Banking Menu ---\n");
+    printf("1. Deposit\n");
+    printf("2. Withdraw\n");
+    printf("3. Check Balance\n");
+    printf("4. Exit\n");
+    printf("---------------------\n");
+}
+
+int main() {
+    float accounts[ACCOUNTS] = {0}; // Array to hold account balances
+    int choice, accountNumber;
+
+    while (1) {
+        displayMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        if (choice == 4) {
+            printf("Exiting...\n");
+            break;
+        }
+
+        printf("Select account (1-%d): ", ACCOUNTS);
+        scanf("%d", &accountNumber);
+
+        if (accountNumber < 1 || accountNumber > ACCOUNTS) {
+            printf("Invalid account number. Please try again.\n");
+            continue;
+        }
+
+        accountNumber--; // Adjust for 0-based index
+
+        switch (choice) {
+            case 1: // Deposit
+                {
+                    float depositAmount;
+                    printf("Enter amount to deposit: ");
+                    scanf("%f", &depositAmount);
+                    if (depositAmount > 0) {
+                        accounts[accountNumber] += depositAmount;
+                        printf("Deposited %.2f to Account %d. New balance: %.2f\n", depositAmount, accountNumber + 1, accounts[accountNumber]);
+                    } else {
+                        printf("Invalid deposit amount.\n");
+                    }
+                }
+                break;
+
+            case 2: // Withdraw
+                {
+                    float withdrawAmount;
+                    printf("Enter amount to withdraw: ");
+                    scanf("%f", &withdrawAmount);
+                    if (withdrawAmount > 0 && withdrawAmount <= accounts[accountNumber]) {
+                        accounts[accountNumber] -= withdrawAmount;
+                        printf("Withdrew %.2f from Account %d. New balance: %.2f\n", withdrawAmount, accountNumber + 1, accounts[accountNumber]);
+                    } else {
+                        printf("Invalid withdrawal amount or insufficient balance.\n");
+                    }
+                }
+                break;
+
+            case 3: // Check Balance
+                printf("Account %d Balance: %.2f\n", accountNumber + 1, accounts[accountNumber]);
+                break;
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
